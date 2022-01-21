@@ -68,11 +68,11 @@ class PHPExcel_DocumentSecurity
     public function __construct()
     {
         // Initialise values
-        $this->lockRevision      = false;
-        $this->lockStructure     = false;
-        $this->lockWindows       = false;
+        $this->lockRevision = false;
+        $this->lockStructure = false;
+        $this->lockWindows = false;
         $this->revisionsPassword = '';
-        $this->workbookPassword  = '';
+        $this->workbookPassword = '';
     }
 
     /**

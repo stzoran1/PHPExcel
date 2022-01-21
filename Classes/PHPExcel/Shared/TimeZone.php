@@ -26,7 +26,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Shared_TimeZone
  *
@@ -42,7 +41,7 @@ class PHPExcel_Shared_TimeZone
      * @private
      * @var    string
      */
-    protected static $timezone    = 'UTC';
+    protected static $timezone = 'UTC';
 
     /**
      * Validate a Timezone name
@@ -73,7 +72,6 @@ class PHPExcel_Shared_TimeZone
         return false;
     }
 
-
     /**
      * Return the Default Timezone used for date/time conversions
      *
@@ -83,7 +81,6 @@ class PHPExcel_Shared_TimeZone
     {
         return self::$timezone;
     }
-
 
     /**
      *    Return the Timezone transition for the specified timezone and timestamp
@@ -95,7 +92,7 @@ class PHPExcel_Shared_TimeZone
     private static function getTimezoneTransitions($objTimezone, $timestamp)
     {
         $allTransitions = $objTimezone->getTransitions();
-        $transitions = array();
+        $transitions = [];
         foreach ($allTransitions as $key => $transition) {
             if ($transition['ts'] > $timestamp) {
                 $transitions[] = ($key > 0) ? $allTransitions[$key - 1] : $transition;
@@ -122,7 +119,7 @@ class PHPExcel_Shared_TimeZone
     {
         if ($timezone !== null) {
             if (!self::_validateTimezone($timezone)) {
-                throw new PHPExcel_Exception("Invalid timezone " . $timezone);
+                throw new PHPExcel_Exception('Invalid timezone ' . $timezone);
             }
         } else {
             $timezone = self::$timezone;

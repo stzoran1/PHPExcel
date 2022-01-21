@@ -6,7 +6,7 @@ if (!defined('PHPEXCEL_ROOT')) {
      * @ignore
      */
     define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
-    require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+    require PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php';
 }
 
 /**
@@ -61,7 +61,7 @@ class PHPExcel_Calculation_Database
 
         if (is_numeric($field)) {
             $keys = array_keys($fieldNames);
-            return $keys[$field-1];
+            return $keys[$field - 1];
         }
         $key = array_search($field, $fieldNames);
         return ($key) ? $key : null;
@@ -92,14 +92,14 @@ class PHPExcel_Calculation_Database
         $criteriaNames = array_shift($criteria);
 
         //    Convert the criteria into a set of AND/OR conditions with [:placeholders]
-        $testConditions = $testValues = array();
+        $testConditions = $testValues = [];
         $testConditionsCount = 0;
         foreach ($criteriaNames as $key => $criteriaName) {
-            $testCondition = array();
+            $testCondition = [];
             $testConditionCount = 0;
             foreach ($criteria as $row => $criterion) {
                 if ($criterion[$key] > '') {
-                    $testCondition[] = '[:'.$criteriaName.']'.PHPExcel_Calculation_Functions::ifCondition($criterion[$key]);
+                    $testCondition[] = '[:' . $criteriaName . ']' . PHPExcel_Calculation_Functions::ifCondition($criterion[$key]);
                     $testConditionCount++;
                 }
             }
@@ -131,7 +131,7 @@ class PHPExcel_Calculation_Database
                 }
             }
             //    evaluate the criteria against the row data
-            $result = PHPExcel_Calculation::getInstance()->_calculateFormulaValue('='.$testConditionList);
+            $result = PHPExcel_Calculation::getInstance()->_calculateFormulaValue('=' . $testConditionList);
             //    If the row failed to meet the criteria, remove it from the database
             if (!$result) {
                 unset($database[$dataRow]);
@@ -141,17 +141,16 @@ class PHPExcel_Calculation_Database
         return $database;
     }
 
-
     private static function getFilteredColumn($database, $field, $criteria)
     {
         //    reduce the database to a set of rows that match all the criteria
         $database = self::filter($database, $criteria);
         //    extract an array of values for the requested column
-        $colData = array();
+        $colData = [];
         foreach ($database as $row) {
             $colData[] = $row[$field];
         }
-        
+
         return $colData;
     }
 
@@ -194,7 +193,6 @@ class PHPExcel_Calculation_Database
             self::getFilteredColumn($database, $field, $criteria)
         );
     }
-
 
     /**
      * DCOUNT
@@ -243,7 +241,6 @@ class PHPExcel_Calculation_Database
         );
     }
 
-
     /**
      * DCOUNTA
      *
@@ -284,7 +281,7 @@ class PHPExcel_Calculation_Database
         //    reduce the database to a set of rows that match all the criteria
         $database = self::filter($database, $criteria);
         //    extract an array of values for the requested column
-        $colData = array();
+        $colData = [];
         foreach ($database as $row) {
             $colData[] = $row[$field];
         }
@@ -294,7 +291,6 @@ class PHPExcel_Calculation_Database
             self::getFilteredColumn($database, $field, $criteria)
         );
     }
-
 
     /**
      * DGET
@@ -340,7 +336,6 @@ class PHPExcel_Calculation_Database
         return $colData[0];
     }
 
-
     /**
      * DMAX
      *
@@ -381,7 +376,6 @@ class PHPExcel_Calculation_Database
             self::getFilteredColumn($database, $field, $criteria)
         );
     }
-
 
     /**
      * DMIN
@@ -424,7 +418,6 @@ class PHPExcel_Calculation_Database
         );
     }
 
-
     /**
      * DPRODUCT
      *
@@ -464,7 +457,6 @@ class PHPExcel_Calculation_Database
             self::getFilteredColumn($database, $field, $criteria)
         );
     }
-
 
     /**
      * DSTDEV
@@ -507,7 +499,6 @@ class PHPExcel_Calculation_Database
         );
     }
 
-
     /**
      * DSTDEVP
      *
@@ -549,7 +540,6 @@ class PHPExcel_Calculation_Database
         );
     }
 
-
     /**
      * DSUM
      *
@@ -589,7 +579,6 @@ class PHPExcel_Calculation_Database
             self::getFilteredColumn($database, $field, $criteria)
         );
     }
-
 
     /**
      * DVAR
@@ -631,7 +620,6 @@ class PHPExcel_Calculation_Database
             self::getFilteredColumn($database, $field, $criteria)
         );
     }
-
 
     /**
      * DVARP

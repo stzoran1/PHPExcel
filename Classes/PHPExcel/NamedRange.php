@@ -80,11 +80,11 @@ class PHPExcel_NamedRange
         }
 
         // Set local members
-        $this->name       = $pName;
-        $this->worksheet  = $pWorksheet;
-        $this->range      = $pRange;
-        $this->localOnly  = $pLocalOnly;
-        $this->scope      = ($pLocalOnly == true) ? (($pScope == null) ? $pWorksheet : $pScope) : null;
+        $this->name = $pName;
+        $this->worksheet = $pWorksheet;
+        $this->range = $pRange;
+        $this->localOnly = $pLocalOnly;
+        $this->scope = ($pLocalOnly == true) ? (($pScope == null) ? $pWorksheet : $pScope) : null;
     }
 
     /**

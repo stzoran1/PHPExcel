@@ -28,12 +28,12 @@
 class PHPExcel_DocumentProperties
 {
     /** constants */
-    const PROPERTY_TYPE_BOOLEAN = 'b';
-    const PROPERTY_TYPE_INTEGER = 'i';
-    const PROPERTY_TYPE_FLOAT   = 'f';
-    const PROPERTY_TYPE_DATE    = 'd';
-    const PROPERTY_TYPE_STRING  = 's';
-    const PROPERTY_TYPE_UNKNOWN = 'u';
+    public const PROPERTY_TYPE_BOOLEAN = 'b';
+    public const PROPERTY_TYPE_INTEGER = 'i';
+    public const PROPERTY_TYPE_FLOAT = 'f';
+    public const PROPERTY_TYPE_DATE = 'd';
+    public const PROPERTY_TYPE_STRING = 's';
+    public const PROPERTY_TYPE_UNKNOWN = 'u';
 
     /**
      * Creator
@@ -117,8 +117,7 @@ class PHPExcel_DocumentProperties
      *
      * @var string
      */
-    private $customProperties = array();
-
+    private $customProperties = [];
 
     /**
      * Create a new PHPExcel_DocumentProperties
@@ -127,7 +126,7 @@ class PHPExcel_DocumentProperties
     {
         // Initialise values
         $this->lastModifiedBy = $this->creator;
-        $this->created  = time();
+        $this->created = time();
         $this->modified = time();
     }
 
@@ -425,7 +424,6 @@ class PHPExcel_DocumentProperties
         if (isset($this->customProperties[$propertyName])) {
             return $this->customProperties[$propertyName]['value'];
         }
-
     }
 
     /**
@@ -439,7 +437,6 @@ class PHPExcel_DocumentProperties
         if (isset($this->customProperties[$propertyName])) {
             return $this->customProperties[$propertyName]['type'];
         }
-
     }
 
     /**
@@ -457,11 +454,11 @@ class PHPExcel_DocumentProperties
      */
     public function setCustomProperty($propertyName, $propertyValue = '', $propertyType = null)
     {
-        if (($propertyType === null) || (!in_array($propertyType, array(self::PROPERTY_TYPE_INTEGER,
-                                                                        self::PROPERTY_TYPE_FLOAT,
-                                                                        self::PROPERTY_TYPE_STRING,
-                                                                        self::PROPERTY_TYPE_DATE,
-                                                                        self::PROPERTY_TYPE_BOOLEAN)))) {
+        if (($propertyType === null) || (!in_array($propertyType, [self::PROPERTY_TYPE_INTEGER,
+            self::PROPERTY_TYPE_FLOAT,
+            self::PROPERTY_TYPE_STRING,
+            self::PROPERTY_TYPE_DATE,
+            self::PROPERTY_TYPE_BOOLEAN]))) {
             if ($propertyValue === null) {
                 $propertyType = self::PROPERTY_TYPE_STRING;
             } elseif (is_float($propertyValue)) {
@@ -475,10 +472,10 @@ class PHPExcel_DocumentProperties
             }
         }
 
-        $this->customProperties[$propertyName] = array(
+        $this->customProperties[$propertyName] = [
             'value' => $propertyValue,
             'type' => $propertyType
-        );
+        ];
         return $this;
     }
 

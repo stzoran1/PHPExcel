@@ -22,7 +22,7 @@ class CholeskyDecomposition
      *    @var array
      *    @access private
      */
-    private $L = array();
+    private $L = [];
 
     /**
      *    Matrix row and column dimension
@@ -68,7 +68,7 @@ class CholeskyDecomposition
                     }
                 }
 
-                for ($k = $i+1; $k < $this->m; ++$k) {
+                for ($k = $i + 1; $k < $this->m; ++$k) {
                     $this->L[$i][$k] = 0.0;
                 }
             }
@@ -109,7 +109,7 @@ class CholeskyDecomposition
         if ($B instanceof Matrix) {
             if ($B->getRowDimension() == $this->m) {
                 if ($this->isspd) {
-                    $X  = $B->getArrayCopy();
+                    $X = $B->getArrayCopy();
                     $nx = $B->getColumnDimension();
 
                     for ($k = 0; $k < $this->m; ++$k) {

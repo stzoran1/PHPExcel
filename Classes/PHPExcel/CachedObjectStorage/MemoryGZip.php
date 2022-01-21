@@ -45,7 +45,6 @@ class PHPExcel_CachedObjectStorage_MemoryGZip extends PHPExcel_CachedObjectStora
         $this->currentObjectID = $this->currentObject = null;
     }
 
-
     /**
      * Add or Update a cell in cache identified by coordinate address
      *
@@ -66,7 +65,6 @@ class PHPExcel_CachedObjectStorage_MemoryGZip extends PHPExcel_CachedObjectStora
 
         return $cell;
     }
-
 
     /**
      * Get cell at a specific coordinate
@@ -98,7 +96,6 @@ class PHPExcel_CachedObjectStorage_MemoryGZip extends PHPExcel_CachedObjectStora
         return $this->currentObject;
     }
 
-
     /**
      * Get a list of all cell addresses currently held in cache
      *
@@ -113,7 +110,6 @@ class PHPExcel_CachedObjectStorage_MemoryGZip extends PHPExcel_CachedObjectStora
         return parent::getCellList();
     }
 
-
     /**
      * Clear the cell collection and disconnect from our parent
      *
@@ -125,7 +121,7 @@ class PHPExcel_CachedObjectStorage_MemoryGZip extends PHPExcel_CachedObjectStora
             $this->currentObject->detach();
             $this->currentObject = $this->currentObjectID = null;
         }
-        $this->cellCache = array();
+        $this->cellCache = [];
 
         //    detach ourself from the worksheet, so that it can then delete this object successfully
         $this->parent = null;

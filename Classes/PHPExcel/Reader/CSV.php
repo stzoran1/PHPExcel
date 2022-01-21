@@ -6,7 +6,7 @@ if (!defined('PHPEXCEL_ROOT')) {
      * @ignore
      */
     define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
-    require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+    require PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php';
 }
 
 /**
@@ -82,7 +82,6 @@ class PHPExcel_Reader_CSV extends PHPExcel_Reader_Abstract implements PHPExcel_R
      * @var    int
      */
     private $contiguousRow = -1;
-
 
     /**
      * Create a new PHPExcel_Reader_CSV
@@ -187,7 +186,7 @@ class PHPExcel_Reader_CSV extends PHPExcel_Reader_Abstract implements PHPExcel_R
         $this->openFile($pFilename);
         if (!$this->isValidFormat()) {
             fclose($this->fileHandle);
-            throw new PHPExcel_Reader_Exception($pFilename . " is an Invalid Spreadsheet file.");
+            throw new PHPExcel_Reader_Exception($pFilename . ' is an Invalid Spreadsheet file.');
         }
         $fileHandle = $this->fileHandle;
 
@@ -195,9 +194,9 @@ class PHPExcel_Reader_CSV extends PHPExcel_Reader_Abstract implements PHPExcel_R
         $this->skipBOM();
         $this->checkSeparator();
 
-        $escapeEnclosures = array( "\\" . $this->enclosure, $this->enclosure . $this->enclosure );
+        $escapeEnclosures = ['\\' . $this->enclosure, $this->enclosure . $this->enclosure];
 
-        $worksheetInfo = array();
+        $worksheetInfo = [];
         $worksheetInfo[0]['worksheetName'] = 'Worksheet';
         $worksheetInfo[0]['lastColumnLetter'] = 'A';
         $worksheetInfo[0]['lastColumnIndex'] = 0;
@@ -252,7 +251,7 @@ class PHPExcel_Reader_CSV extends PHPExcel_Reader_Abstract implements PHPExcel_R
         $this->openFile($pFilename);
         if (!$this->isValidFormat()) {
             fclose($this->fileHandle);
-            throw new PHPExcel_Reader_Exception($pFilename . " is an Invalid Spreadsheet file.");
+            throw new PHPExcel_Reader_Exception($pFilename . ' is an Invalid Spreadsheet file.');
         }
         $fileHandle = $this->fileHandle;
 
@@ -266,14 +265,14 @@ class PHPExcel_Reader_CSV extends PHPExcel_Reader_Abstract implements PHPExcel_R
         }
         $sheet = $objPHPExcel->setActiveSheetIndex($this->sheetIndex);
 
-        $escapeEnclosures = array( "\\" . $this->enclosure,
-                                   $this->enclosure . $this->enclosure
-                                 );
+        $escapeEnclosures = ['\\' . $this->enclosure,
+            $this->enclosure . $this->enclosure
+        ];
 
         // Set our starting row based on whether we're in contiguous mode or not
         $currentRow = 1;
         if ($this->contiguous) {
-            $currentRow = ($this->contiguousRow == -1) ? $sheet->getHighestRow(): $this->contiguousRow;
+            $currentRow = ($this->contiguousRow == -1) ? $sheet->getHighestRow() : $this->contiguousRow;
         }
 
         // Loop through each line of the file in turn

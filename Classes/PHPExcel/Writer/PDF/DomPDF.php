@@ -70,7 +70,7 @@ class PHPExcel_Writer_PDF_DomPDF extends PHPExcel_Writer_PDF_Core implements PHP
             $printPaperSize = $this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet($this->getSheetIndex())->getPageMargins();
         }
-        
+
         $orientation = ($orientation == 'L') ? 'landscape' : 'portrait';
 
         //  Override Page Orientation
@@ -87,7 +87,6 @@ class PHPExcel_Writer_PDF_DomPDF extends PHPExcel_Writer_PDF_Core implements PHP
         if (isset(self::$paperSizes[$printPaperSize])) {
             $paperSize = self::$paperSizes[$printPaperSize];
         }
-
 
         //  Create PDF
         $pdf = new DOMPDF();

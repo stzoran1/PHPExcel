@@ -75,7 +75,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      */
     public function getExtension()
     {
-        $exploded = explode(".", basename($this->path));
+        $exploded = explode('.', basename($this->path));
         return $exploded[count($exploded) - 1];
     }
 

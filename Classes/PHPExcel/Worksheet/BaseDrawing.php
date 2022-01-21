@@ -124,21 +124,21 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     public function __construct()
     {
         // Initialise values
-        $this->name                = '';
-        $this->description        = '';
-        $this->worksheet          = null;
-        $this->coordinates        = 'A1';
-        $this->offsetX            = 0;
-        $this->offsetY            = 0;
-        $this->width              = 0;
-        $this->height             = 0;
+        $this->name = '';
+        $this->description = '';
+        $this->worksheet = null;
+        $this->coordinates = 'A1';
+        $this->offsetX = 0;
+        $this->offsetY = 0;
+        $this->width = 0;
+        $this->height = 0;
         $this->resizeProportional = true;
-        $this->rotation           = 0;
-        $this->shadow             = new PHPExcel_Worksheet_Drawing_Shadow();
+        $this->rotation = 0;
+        $this->shadow = new PHPExcel_Worksheet_Drawing_Shadow();
 
         // Set image index
         self::$imageCounter++;
-        $this->imageIndex             = self::$imageCounter;
+        $this->imageIndex = self::$imageCounter;
     }
 
     /**
@@ -236,7 +236,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
                 // Set new PHPExcel_Worksheet
                 $this->setWorksheet($pValue);
             } else {
-                throw new PHPExcel_Exception("A PHPExcel_Worksheet has already been assigned. Drawings can only exist on one PHPExcel_Worksheet.");
+                throw new PHPExcel_Exception('A PHPExcel_Worksheet has already been assigned. Drawings can only exist on one PHPExcel_Worksheet.');
             }
         }
         return $this;
@@ -388,10 +388,10 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
         if ($this->resizeProportional && !($width == 0 || $height == 0)) {
             if (($xratio * $this->height) < $height) {
                 $this->height = ceil($xratio * $this->height);
-                $this->width  = $width;
+                $this->width = $width;
             } else {
-                $this->width    = ceil($yratio * $this->width);
-                $this->height    = $height;
+                $this->width = ceil($yratio * $this->width);
+                $this->height = $height;
             }
         } else {
             $this->width = $width;
@@ -464,8 +464,8 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      */
     public function setShadow(PHPExcel_Worksheet_Drawing_Shadow $pValue = null)
     {
-           $this->shadow = $pValue;
-           return $this;
+        $this->shadow = $pValue;
+        return $this;
     }
 
     /**

@@ -56,7 +56,7 @@ abstract class PHPExcel_Writer_Abstract implements PHPExcel_Writer_IWriter
      *
      * @var string
      */
-    protected $_diskCachingDirectory    = './';
+    protected $_diskCachingDirectory = './';
 
     /**
      * Write charts in workbook?
@@ -80,7 +80,7 @@ abstract class PHPExcel_Writer_Abstract implements PHPExcel_Writer_IWriter
      */
     public function setIncludeCharts($pValue = false)
     {
-        $this->includeCharts = (boolean) $pValue;
+        $this->includeCharts = (bool) $pValue;
         return $this;
     }
 
@@ -109,7 +109,7 @@ abstract class PHPExcel_Writer_Abstract implements PHPExcel_Writer_IWriter
      */
     public function setPreCalculateFormulas($pValue = true)
     {
-        $this->preCalculateFormulas = (boolean) $pValue;
+        $this->preCalculateFormulas = (bool) $pValue;
         return $this;
     }
 

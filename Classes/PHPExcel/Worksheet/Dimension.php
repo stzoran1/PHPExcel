@@ -110,7 +110,7 @@ abstract class PHPExcel_Worksheet_Dimension
     public function setOutlineLevel($pValue)
     {
         if ($pValue < 0 || $pValue > 7) {
-            throw new PHPExcel_Exception("Outline level must range between 0 and 7.");
+            throw new PHPExcel_Exception('Outline level must range between 0 and 7.');
         }
 
         $this->outlineLevel = $pValue;

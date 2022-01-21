@@ -6,7 +6,7 @@ if (!defined('PHPEXCEL_ROOT')) {
      * @ignore
      */
     define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
-    require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+    require PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php';
 }
 
 /** FINANCIAL_MAX_ITERATIONS */
@@ -55,7 +55,6 @@ class PHPExcel_Calculation_Financial
         return ($testDate->format('d') == $testDate->format('t'));
     }
 
-
     /**
      * isFirstDayOfMonth
      *
@@ -69,7 +68,6 @@ class PHPExcel_Calculation_Financial
         return ($testDate->format('d') == 1);
     }
 
-
     private static function couponFirstPeriodDate($settlement, $maturity, $frequency, $next)
     {
         $months = 12 / $frequency;
@@ -78,10 +76,10 @@ class PHPExcel_Calculation_Financial
         $eom = self::isLastDayOfMonth($result);
 
         while ($settlement < PHPExcel_Shared_Date::PHPToExcel($result)) {
-            $result->modify('-'.$months.' months');
+            $result->modify('-' . $months . ' months');
         }
         if ($next) {
-            $result->modify('+'.$months.' months');
+            $result->modify('+' . $months . ' months');
         }
 
         if ($eom) {
@@ -90,7 +88,6 @@ class PHPExcel_Calculation_Financial
 
         return PHPExcel_Shared_Date::PHPToExcel($result);
     }
-
 
     private static function isValidFrequency($frequency)
     {
@@ -103,7 +100,6 @@ class PHPExcel_Calculation_Financial
         }
         return false;
     }
-
 
     /**
      * daysPerYear
@@ -139,19 +135,17 @@ class PHPExcel_Calculation_Financial
         return $daysPerYear;
     }
 
-
     private static function interestAndPrincipal($rate = 0, $per = 0, $nper = 0, $pv = 0, $fv = 0, $type = 0)
     {
         $pmt = self::PMT($rate, $nper, $pv, $fv, $type);
         $capital = $pv;
-        for ($i = 1; $i<= $per; ++$i) {
+        for ($i = 1; $i <= $per; ++$i) {
             $interest = ($type && $i == 1) ? 0 : -$capital * $rate;
             $principal = $pmt - $interest;
             $capital += $principal;
         }
-        return array($interest, $principal);
+        return [$interest, $principal];
     }
-
 
     /**
      * ACCRINT
@@ -190,18 +184,18 @@ class PHPExcel_Calculation_Financial
      */
     public static function ACCRINT($issue, $firstinterest, $settlement, $rate, $par = 1000, $frequency = 1, $basis = 0)
     {
-        $issue        = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
-        $firstinterest    = PHPExcel_Calculation_Functions::flattenSingleValue($firstinterest);
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $rate        = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $par        = (is_null($par))        ? 1000 :    PHPExcel_Calculation_Functions::flattenSingleValue($par);
-        $frequency    = (is_null($frequency))    ? 1    :         PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis        = (is_null($basis))        ? 0    :        PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $issue = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
+        $firstinterest = PHPExcel_Calculation_Functions::flattenSingleValue($firstinterest);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $par = (is_null($par)) ? 1000 : PHPExcel_Calculation_Functions::flattenSingleValue($par);
+        $frequency = (is_null($frequency)) ? 1 : PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if ((is_numeric($rate)) && (is_numeric($par))) {
-            $rate    = (float) $rate;
-            $par    = (float) $par;
+            $rate = (float) $rate;
+            $par = (float) $par;
             if (($rate <= 0) || ($par <= 0)) {
                 return PHPExcel_Calculation_Functions::NaN();
             }
@@ -215,7 +209,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * ACCRINTM
@@ -242,16 +235,16 @@ class PHPExcel_Calculation_Financial
      */
     public static function ACCRINTM($issue, $settlement, $rate, $par = 1000, $basis = 0)
     {
-        $issue        = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $rate        = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $par        = (is_null($par))    ? 1000 :    PHPExcel_Calculation_Functions::flattenSingleValue($par);
-        $basis        = (is_null($basis))    ? 0 :        PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $issue = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $par = (is_null($par)) ? 1000 : PHPExcel_Calculation_Functions::flattenSingleValue($par);
+        $basis = (is_null($basis)) ? 0 : PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if ((is_numeric($rate)) && (is_numeric($par))) {
-            $rate    = (float) $rate;
-            $par    = (float) $par;
+            $rate = (float) $rate;
+            $par = (float) $par;
             if (($rate <= 0) || ($par <= 0)) {
                 return PHPExcel_Calculation_Functions::NaN();
             }
@@ -264,7 +257,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * AMORDEGRC
@@ -299,13 +291,13 @@ class PHPExcel_Calculation_Financial
      */
     public static function AMORDEGRC($cost, $purchased, $firstPeriod, $salvage, $period, $rate, $basis = 0)
     {
-        $cost            = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
-        $purchased        = PHPExcel_Calculation_Functions::flattenSingleValue($purchased);
-        $firstPeriod    = PHPExcel_Calculation_Functions::flattenSingleValue($firstPeriod);
-        $salvage        = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
-        $period            = floor(PHPExcel_Calculation_Functions::flattenSingleValue($period));
-        $rate            = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $basis            = (is_null($basis))    ? 0 :    (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $cost = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
+        $purchased = PHPExcel_Calculation_Functions::flattenSingleValue($purchased);
+        $firstPeriod = PHPExcel_Calculation_Functions::flattenSingleValue($firstPeriod);
+        $salvage = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
+        $period = floor(PHPExcel_Calculation_Functions::flattenSingleValue($period));
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    The depreciation coefficients are:
         //    Life of assets (1/rate)        Depreciation coefficient
@@ -347,7 +339,6 @@ class PHPExcel_Calculation_Financial
         return $fNRate;
     }
 
-
     /**
      * AMORLINC
      *
@@ -376,13 +367,13 @@ class PHPExcel_Calculation_Financial
      */
     public static function AMORLINC($cost, $purchased, $firstPeriod, $salvage, $period, $rate, $basis = 0)
     {
-        $cost        = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
-        $purchased   = PHPExcel_Calculation_Functions::flattenSingleValue($purchased);
+        $cost = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
+        $purchased = PHPExcel_Calculation_Functions::flattenSingleValue($purchased);
         $firstPeriod = PHPExcel_Calculation_Functions::flattenSingleValue($firstPeriod);
-        $salvage     = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
-        $period      = PHPExcel_Calculation_Functions::flattenSingleValue($period);
-        $rate        = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $basis       = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $salvage = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
+        $period = PHPExcel_Calculation_Functions::flattenSingleValue($period);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         $fOneRate = $cost * $rate;
         $fCostDelta = $cost - $salvage;
@@ -407,7 +398,6 @@ class PHPExcel_Calculation_Financial
             return 0.0;
         }
     }
-
 
     /**
      * COUPDAYBS
@@ -444,9 +434,9 @@ class PHPExcel_Calculation_Financial
     public static function COUPDAYBS($settlement, $maturity, $frequency, $basis = 0)
     {
         $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity   = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $frequency  = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis      = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -466,7 +456,6 @@ class PHPExcel_Calculation_Financial
 
         return PHPExcel_Calculation_DateTime::YEARFRAC($prev, $settlement, $basis) * $daysPerYear;
     }
-
 
     /**
      * COUPDAYS
@@ -503,9 +492,9 @@ class PHPExcel_Calculation_Financial
     public static function COUPDAYS($settlement, $maturity, $frequency, $basis = 0)
     {
         $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity   = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $frequency  = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis      = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -539,7 +528,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * COUPDAYSNC
@@ -576,9 +564,9 @@ class PHPExcel_Calculation_Financial
     public static function COUPDAYSNC($settlement, $maturity, $frequency, $basis = 0)
     {
         $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity   = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $frequency  = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis      = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -598,7 +586,6 @@ class PHPExcel_Calculation_Financial
 
         return PHPExcel_Calculation_DateTime::YEARFRAC($settlement, $next, $basis) * $daysPerYear;
     }
-
 
     /**
      * COUPNCD
@@ -635,10 +622,10 @@ class PHPExcel_Calculation_Financial
      */
     public static function COUPNCD($settlement, $maturity, $frequency, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $frequency    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis        = (is_null($basis))    ? 0 :    (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -655,7 +642,6 @@ class PHPExcel_Calculation_Financial
 
         return self::couponFirstPeriodDate($settlement, $maturity, $frequency, true);
     }
-
 
     /**
      * COUPNUM
@@ -692,10 +678,10 @@ class PHPExcel_Calculation_Financial
      */
     public static function COUPNUM($settlement, $maturity, $frequency, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $frequency    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis        = (is_null($basis))    ? 0 :    (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -727,7 +713,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * COUPPCD
@@ -764,10 +749,10 @@ class PHPExcel_Calculation_Financial
      */
     public static function COUPPCD($settlement, $maturity, $frequency, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $frequency    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis        = (is_null($basis))    ? 0 :    (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -784,7 +769,6 @@ class PHPExcel_Calculation_Financial
 
         return self::couponFirstPeriodDate($settlement, $maturity, $frequency, false);
     }
-
 
     /**
      * CUMIPMT
@@ -809,12 +793,12 @@ class PHPExcel_Calculation_Financial
      */
     public static function CUMIPMT($rate, $nper, $pv, $start, $end, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $nper    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $start    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($start);
-        $end    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($end);
-        $type    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $nper = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $start = (int) PHPExcel_Calculation_Functions::flattenSingleValue($start);
+        $end = (int) PHPExcel_Calculation_Functions::flattenSingleValue($end);
+        $type = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -832,7 +816,6 @@ class PHPExcel_Calculation_Financial
 
         return $interest;
     }
-
 
     /**
      * CUMPRINC
@@ -857,12 +840,12 @@ class PHPExcel_Calculation_Financial
      */
     public static function CUMPRINC($rate, $nper, $pv, $start, $end, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $nper    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $start    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($start);
-        $end    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($end);
-        $type    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $nper = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $start = (int) PHPExcel_Calculation_Functions::flattenSingleValue($start);
+        $end = (int) PHPExcel_Calculation_Functions::flattenSingleValue($end);
+        $type = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -880,7 +863,6 @@ class PHPExcel_Calculation_Financial
 
         return $principal;
     }
-
 
     /**
      * DB
@@ -910,19 +892,19 @@ class PHPExcel_Calculation_Financial
      */
     public static function DB($cost, $salvage, $life, $period, $month = 12)
     {
-        $cost        = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
-        $salvage    = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
-        $life        = PHPExcel_Calculation_Functions::flattenSingleValue($life);
-        $period        = PHPExcel_Calculation_Functions::flattenSingleValue($period);
-        $month        = PHPExcel_Calculation_Functions::flattenSingleValue($month);
+        $cost = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
+        $salvage = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
+        $life = PHPExcel_Calculation_Functions::flattenSingleValue($life);
+        $period = PHPExcel_Calculation_Functions::flattenSingleValue($period);
+        $month = PHPExcel_Calculation_Functions::flattenSingleValue($month);
 
         //    Validate
         if ((is_numeric($cost)) && (is_numeric($salvage)) && (is_numeric($life)) && (is_numeric($period)) && (is_numeric($month))) {
-            $cost    = (float) $cost;
+            $cost = (float) $cost;
             $salvage = (float) $salvage;
-            $life    = (int) $life;
-            $period  = (int) $period;
-            $month   = (int) $month;
+            $life = (int) $life;
+            $period = (int) $period;
+            $month = (int) $month;
             if ($cost == 0) {
                 return 0.0;
             } elseif (($cost < 0) || (($salvage / $cost) < 0) || ($life <= 0) || ($period < 1) || ($month < 1)) {
@@ -952,7 +934,6 @@ class PHPExcel_Calculation_Financial
         return PHPExcel_Calculation_Functions::VALUE();
     }
 
-
     /**
      * DDB
      *
@@ -978,19 +959,19 @@ class PHPExcel_Calculation_Financial
      */
     public static function DDB($cost, $salvage, $life, $period, $factor = 2.0)
     {
-        $cost        = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
-        $salvage    = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
-        $life        = PHPExcel_Calculation_Functions::flattenSingleValue($life);
-        $period        = PHPExcel_Calculation_Functions::flattenSingleValue($period);
-        $factor        = PHPExcel_Calculation_Functions::flattenSingleValue($factor);
+        $cost = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
+        $salvage = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
+        $life = PHPExcel_Calculation_Functions::flattenSingleValue($life);
+        $period = PHPExcel_Calculation_Functions::flattenSingleValue($period);
+        $factor = PHPExcel_Calculation_Functions::flattenSingleValue($factor);
 
         //    Validate
         if ((is_numeric($cost)) && (is_numeric($salvage)) && (is_numeric($life)) && (is_numeric($period)) && (is_numeric($factor))) {
-            $cost    = (float) $cost;
+            $cost = (float) $cost;
             $salvage = (float) $salvage;
-            $life    = (int) $life;
-            $period  = (int) $period;
-            $factor  = (float) $factor;
+            $life = (int) $life;
+            $period = (int) $period;
+            $factor = (float) $factor;
             if (($cost <= 0) || (($salvage / $cost) < 0) || ($life <= 0) || ($period < 1) || ($factor <= 0.0) || ($period > $life)) {
                 return PHPExcel_Calculation_Functions::NaN();
             }
@@ -1011,7 +992,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * DISC
@@ -1040,17 +1020,17 @@ class PHPExcel_Calculation_Financial
      */
     public static function DISC($settlement, $maturity, $price, $redemption, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $price        = PHPExcel_Calculation_Functions::flattenSingleValue($price);
-        $redemption    = PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
-        $basis        = PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $price = PHPExcel_Calculation_Functions::flattenSingleValue($price);
+        $redemption = PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
+        $basis = PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if ((is_numeric($price)) && (is_numeric($redemption)) && (is_numeric($basis))) {
-            $price        = (float) $price;
-            $redemption    = (float) $redemption;
-            $basis        = (int) $basis;
+            $price = (float) $price;
+            $redemption = (float) $redemption;
+            $basis = (int) $basis;
             if (($price <= 0) || ($redemption <= 0)) {
                 return PHPExcel_Calculation_Functions::NaN();
             }
@@ -1064,7 +1044,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * DOLLARDE
@@ -1084,8 +1063,8 @@ class PHPExcel_Calculation_Financial
      */
     public static function DOLLARDE($fractional_dollar = null, $fraction = 0)
     {
-        $fractional_dollar    = PHPExcel_Calculation_Functions::flattenSingleValue($fractional_dollar);
-        $fraction            = (int)PHPExcel_Calculation_Functions::flattenSingleValue($fraction);
+        $fractional_dollar = PHPExcel_Calculation_Functions::flattenSingleValue($fractional_dollar);
+        $fraction = (int)PHPExcel_Calculation_Functions::flattenSingleValue($fraction);
 
         // Validate parameters
         if (is_null($fractional_dollar) || $fraction < 0) {
@@ -1101,7 +1080,6 @@ class PHPExcel_Calculation_Financial
         $cents *= pow(10, ceil(log10($fraction)));
         return $dollars + $cents;
     }
-
 
     /**
      * DOLLARFR
@@ -1121,8 +1099,8 @@ class PHPExcel_Calculation_Financial
      */
     public static function DOLLARFR($decimal_dollar = null, $fraction = 0)
     {
-        $decimal_dollar    = PHPExcel_Calculation_Functions::flattenSingleValue($decimal_dollar);
-        $fraction        = (int)PHPExcel_Calculation_Functions::flattenSingleValue($fraction);
+        $decimal_dollar = PHPExcel_Calculation_Functions::flattenSingleValue($decimal_dollar);
+        $fraction = (int)PHPExcel_Calculation_Functions::flattenSingleValue($fraction);
 
         // Validate parameters
         if (is_null($decimal_dollar) || $fraction < 0) {
@@ -1138,7 +1116,6 @@ class PHPExcel_Calculation_Financial
         $cents *= pow(10, -ceil(log10($fraction)));
         return $dollars + $cents;
     }
-
 
     /**
      * EFFECT
@@ -1157,8 +1134,8 @@ class PHPExcel_Calculation_Financial
      */
     public static function EFFECT($nominal_rate = 0, $npery = 0)
     {
-        $nominal_rate    = PHPExcel_Calculation_Functions::flattenSingleValue($nominal_rate);
-        $npery            = (int)PHPExcel_Calculation_Functions::flattenSingleValue($npery);
+        $nominal_rate = PHPExcel_Calculation_Functions::flattenSingleValue($nominal_rate);
+        $npery = (int)PHPExcel_Calculation_Functions::flattenSingleValue($npery);
 
         // Validate parameters
         if ($nominal_rate <= 0 || $npery < 1) {
@@ -1167,7 +1144,6 @@ class PHPExcel_Calculation_Financial
 
         return pow((1 + $nominal_rate / $npery), $npery) - 1;
     }
-
 
     /**
      * FV
@@ -1193,11 +1169,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function FV($rate = 0, $nper = 0, $pmt = 0, $pv = 0, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $nper    = PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pmt    = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $type    = PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $nper = PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pmt = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $type = PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -1210,7 +1186,6 @@ class PHPExcel_Calculation_Financial
         }
         return -$pv - $pmt * $nper;
     }
-
 
     /**
      * FVSCHEDULE
@@ -1227,8 +1202,8 @@ class PHPExcel_Calculation_Financial
      */
     public static function FVSCHEDULE($principal, $schedule)
     {
-        $principal    = PHPExcel_Calculation_Functions::flattenSingleValue($principal);
-        $schedule    = PHPExcel_Calculation_Functions::flattenArray($schedule);
+        $principal = PHPExcel_Calculation_Functions::flattenSingleValue($principal);
+        $schedule = PHPExcel_Calculation_Functions::flattenArray($schedule);
 
         foreach ($schedule as $rate) {
             $principal *= 1 + $rate;
@@ -1236,7 +1211,6 @@ class PHPExcel_Calculation_Financial
 
         return $principal;
     }
-
 
     /**
      * INTRATE
@@ -1262,17 +1236,17 @@ class PHPExcel_Calculation_Financial
      */
     public static function INTRATE($settlement, $maturity, $investment, $redemption, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $investment    = PHPExcel_Calculation_Functions::flattenSingleValue($investment);
-        $redemption    = PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
-        $basis        = PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $investment = PHPExcel_Calculation_Functions::flattenSingleValue($investment);
+        $redemption = PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
+        $basis = PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if ((is_numeric($investment)) && (is_numeric($redemption)) && (is_numeric($basis))) {
-            $investment    = (float) $investment;
-            $redemption    = (float) $redemption;
-            $basis        = (int) $basis;
+            $investment = (float) $investment;
+            $redemption = (float) $redemption;
+            $basis = (int) $basis;
             if (($investment <= 0) || ($redemption <= 0)) {
                 return PHPExcel_Calculation_Functions::NaN();
             }
@@ -1286,7 +1260,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * IPMT
@@ -1306,12 +1279,12 @@ class PHPExcel_Calculation_Financial
      */
     public static function IPMT($rate, $per, $nper, $pv, $fv = 0, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $per    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($per);
-        $nper    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $fv        = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
-        $type    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $per = (int) PHPExcel_Calculation_Functions::flattenSingleValue($per);
+        $nper = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $fv = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
+        $type = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -1395,7 +1368,6 @@ class PHPExcel_Calculation_Financial
         return PHPExcel_Calculation_Functions::VALUE();
     }
 
-
     /**
      * ISPMT
      *
@@ -1426,7 +1398,7 @@ class PHPExcel_Calculation_Financial
 
         // Calculate
         $principlePayment = ($principleRemaining * 1.0) / ($numberPeriods * 1.0);
-        for ($i=0; $i <= $period; ++$i) {
+        for ($i = 0; $i <= $period; ++$i) {
             $returnValue = $interestRate * $principleRemaining * -1;
             $principleRemaining -= $principlePayment;
             // principle needs to be 0 after the last payment, don't let floating point screw it up
@@ -1436,7 +1408,6 @@ class PHPExcel_Calculation_Financial
         }
         return($returnValue);
     }
-
 
     /**
      * MIRR
@@ -1459,9 +1430,9 @@ class PHPExcel_Calculation_Financial
         if (!is_array($values)) {
             return PHPExcel_Calculation_Functions::VALUE();
         }
-        $values                = PHPExcel_Calculation_Functions::flattenArray($values);
-        $finance_rate        = PHPExcel_Calculation_Functions::flattenSingleValue($finance_rate);
-        $reinvestment_rate    = PHPExcel_Calculation_Functions::flattenSingleValue($reinvestment_rate);
+        $values = PHPExcel_Calculation_Functions::flattenArray($values);
+        $finance_rate = PHPExcel_Calculation_Functions::flattenSingleValue($finance_rate);
+        $reinvestment_rate = PHPExcel_Calculation_Functions::flattenSingleValue($reinvestment_rate);
         $n = count($values);
 
         $rr = 1.0 + $reinvestment_rate;
@@ -1486,7 +1457,6 @@ class PHPExcel_Calculation_Financial
         return (is_finite($mirr) ? $mirr : PHPExcel_Calculation_Functions::VALUE());
     }
 
-
     /**
      * NOMINAL
      *
@@ -1498,8 +1468,8 @@ class PHPExcel_Calculation_Financial
      */
     public static function NOMINAL($effect_rate = 0, $npery = 0)
     {
-        $effect_rate    = PHPExcel_Calculation_Functions::flattenSingleValue($effect_rate);
-        $npery            = (int)PHPExcel_Calculation_Functions::flattenSingleValue($npery);
+        $effect_rate = PHPExcel_Calculation_Functions::flattenSingleValue($effect_rate);
+        $npery = (int)PHPExcel_Calculation_Functions::flattenSingleValue($npery);
 
         // Validate parameters
         if ($effect_rate <= 0 || $npery < 1) {
@@ -1509,7 +1479,6 @@ class PHPExcel_Calculation_Financial
         // Calculate
         return $npery * (pow($effect_rate + 1, 1 / $npery) - 1);
     }
-
 
     /**
      * NPER
@@ -1525,11 +1494,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function NPER($rate = 0, $pmt = 0, $pv = 0, $fv = 0, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $pmt    = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $fv        = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
-        $type    = PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $pmt = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $fv = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
+        $type = PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -1546,7 +1515,7 @@ class PHPExcel_Calculation_Financial
         if ($pmt == 0) {
             return PHPExcel_Calculation_Functions::NaN();
         }
-        return (-$pv -$fv) / $pmt;
+        return (-$pv - $fv) / $pmt;
     }
 
     /**
@@ -1591,11 +1560,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function PMT($rate = 0, $nper = 0, $pv = 0, $fv = 0, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $nper    = PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $fv        = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
-        $type    = PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $nper = PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $fv = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
+        $type = PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -1608,7 +1577,6 @@ class PHPExcel_Calculation_Financial
         }
         return (-$pv - $fv) / $nper;
     }
-
 
     /**
      * PPMT
@@ -1625,12 +1593,12 @@ class PHPExcel_Calculation_Financial
      */
     public static function PPMT($rate, $per, $nper, $pv, $fv = 0, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $per    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($per);
-        $nper    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $fv        = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
-        $type    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $per = (int) PHPExcel_Calculation_Functions::flattenSingleValue($per);
+        $nper = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $fv = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
+        $type = (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -1645,16 +1613,15 @@ class PHPExcel_Calculation_Financial
         return $interestAndPrincipal[1];
     }
 
-
     public static function PRICE($settlement, $maturity, $rate, $yield, $redemption, $frequency, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $rate        = (float) PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $yield        = (float) PHPExcel_Calculation_Functions::flattenSingleValue($yield);
-        $redemption    = (float) PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
-        $frequency    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
-        $basis        = (is_null($basis))    ? 0 :    (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $rate = (float) PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $yield = (float) PHPExcel_Calculation_Functions::flattenSingleValue($yield);
+        $redemption = (float) PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
+        $frequency = (int) PHPExcel_Calculation_Functions::flattenSingleValue($frequency);
+        $basis = (is_null($basis)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         if (is_string($settlement = PHPExcel_Calculation_DateTime::getDateValue($settlement))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -1674,9 +1641,9 @@ class PHPExcel_Calculation_Financial
         $n = self::COUPNUM($settlement, $maturity, $frequency, $basis);
         $a = self::COUPDAYBS($settlement, $maturity, $frequency, $basis);
 
-        $baseYF    = 1.0 + ($yield / $frequency);
-        $rfp    = 100 * ($rate / $frequency);
-        $de    = $dsc / $e;
+        $baseYF = 1.0 + ($yield / $frequency);
+        $rfp = 100 * ($rate / $frequency);
+        $de = $dsc / $e;
 
         $result = $redemption / pow($baseYF, (--$n + $de));
         for ($k = 0; $k <= $n; ++$k) {
@@ -1686,7 +1653,6 @@ class PHPExcel_Calculation_Financial
 
         return $result;
     }
-
 
     /**
      * PRICEDISC
@@ -1709,11 +1675,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function PRICEDISC($settlement, $maturity, $discount, $redemption, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $discount    = (float) PHPExcel_Calculation_Functions::flattenSingleValue($discount);
-        $redemption    = (float) PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
-        $basis        = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $discount = (float) PHPExcel_Calculation_Functions::flattenSingleValue($discount);
+        $redemption = (float) PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
+        $basis = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if ((is_numeric($discount)) && (is_numeric($redemption)) && (is_numeric($basis))) {
@@ -1730,7 +1696,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * PRICEMAT
@@ -1754,12 +1719,12 @@ class PHPExcel_Calculation_Financial
      */
     public static function PRICEMAT($settlement, $maturity, $issue, $rate, $yield, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $issue        = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
-        $rate        = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $yield        = PHPExcel_Calculation_Functions::flattenSingleValue($yield);
-        $basis        = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $issue = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $yield = PHPExcel_Calculation_Functions::flattenSingleValue($yield);
+        $basis = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if (is_numeric($rate) && is_numeric($yield)) {
@@ -1796,7 +1761,6 @@ class PHPExcel_Calculation_Financial
         return PHPExcel_Calculation_Functions::VALUE();
     }
 
-
     /**
      * PV
      *
@@ -1811,11 +1775,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function PV($rate = 0, $nper = 0, $pmt = 0, $fv = 0, $type = 0)
     {
-        $rate    = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $nper    = PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pmt    = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
-        $fv        = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
-        $type    = PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $nper = PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pmt = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
+        $fv = PHPExcel_Calculation_Functions::flattenSingleValue($fv);
+        $type = PHPExcel_Calculation_Functions::flattenSingleValue($type);
 
         // Validate parameters
         if ($type != 0 && $type != 1) {
@@ -1828,7 +1792,6 @@ class PHPExcel_Calculation_Financial
         }
         return -$fv - $pmt * $nper;
     }
-
 
     /**
      * RATE
@@ -1862,12 +1825,12 @@ class PHPExcel_Calculation_Financial
      **/
     public static function RATE($nper, $pmt, $pv, $fv = 0.0, $type = 0, $guess = 0.1)
     {
-        $nper    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
-        $pmt    = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
-        $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
-        $fv        = (is_null($fv))    ? 0.0    :    PHPExcel_Calculation_Functions::flattenSingleValue($fv);
-        $type    = (is_null($type))    ? 0        :    (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
-        $guess    = (is_null($guess))    ? 0.1    :    PHPExcel_Calculation_Functions::flattenSingleValue($guess);
+        $nper = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
+        $pmt = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
+        $pv = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
+        $fv = (is_null($fv)) ? 0.0 : PHPExcel_Calculation_Functions::flattenSingleValue($fv);
+        $type = (is_null($type)) ? 0 : (int) PHPExcel_Calculation_Functions::flattenSingleValue($type);
+        $guess = (is_null($guess)) ? 0.1 : PHPExcel_Calculation_Functions::flattenSingleValue($guess);
 
         $rate = $guess;
         if (abs($rate) < FINANCIAL_PRECISION) {
@@ -1880,7 +1843,7 @@ class PHPExcel_Calculation_Financial
         $y1 = $pv * $f + $pmt * (1 / $rate + $type) * ($f - 1) + $fv;
 
         // find root by secant method
-        $i  = $x0 = 0.0;
+        $i = $x0 = 0.0;
         $x1 = $rate;
         while ((abs($y0 - $y1) > FINANCIAL_PRECISION) && ($i < FINANCIAL_MAX_ITERATIONS)) {
             $rate = ($y1 * $x0 - $y0 * $x1) / ($y1 - $y0);
@@ -1903,7 +1866,6 @@ class PHPExcel_Calculation_Financial
         return $rate;
     }
 
-
     /**
      * RECEIVED
      *
@@ -1925,11 +1887,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function RECEIVED($settlement, $maturity, $investment, $discount, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $investment    = (float) PHPExcel_Calculation_Functions::flattenSingleValue($investment);
-        $discount    = (float) PHPExcel_Calculation_Functions::flattenSingleValue($discount);
-        $basis        = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $investment = (float) PHPExcel_Calculation_Functions::flattenSingleValue($investment);
+        $discount = (float) PHPExcel_Calculation_Functions::flattenSingleValue($discount);
+        $basis = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if ((is_numeric($investment)) && (is_numeric($discount)) && (is_numeric($basis))) {
@@ -1942,11 +1904,10 @@ class PHPExcel_Calculation_Financial
                 return $daysBetweenSettlementAndMaturity;
             }
 
-            return $investment / ( 1 - ($discount * $daysBetweenSettlementAndMaturity));
+            return $investment / (1 - ($discount * $daysBetweenSettlementAndMaturity));
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * SLN
@@ -1960,9 +1921,9 @@ class PHPExcel_Calculation_Financial
      */
     public static function SLN($cost, $salvage, $life)
     {
-        $cost        = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
-        $salvage    = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
-        $life        = PHPExcel_Calculation_Functions::flattenSingleValue($life);
+        $cost = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
+        $salvage = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
+        $life = PHPExcel_Calculation_Functions::flattenSingleValue($life);
 
         // Calculate
         if ((is_numeric($cost)) && (is_numeric($salvage)) && (is_numeric($life))) {
@@ -1973,7 +1934,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * SYD
@@ -1988,10 +1948,10 @@ class PHPExcel_Calculation_Financial
      */
     public static function SYD($cost, $salvage, $life, $period)
     {
-        $cost        = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
-        $salvage    = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
-        $life        = PHPExcel_Calculation_Functions::flattenSingleValue($life);
-        $period        = PHPExcel_Calculation_Functions::flattenSingleValue($period);
+        $cost = PHPExcel_Calculation_Functions::flattenSingleValue($cost);
+        $salvage = PHPExcel_Calculation_Functions::flattenSingleValue($salvage);
+        $life = PHPExcel_Calculation_Functions::flattenSingleValue($life);
+        $period = PHPExcel_Calculation_Functions::flattenSingleValue($period);
 
         // Calculate
         if ((is_numeric($cost)) && (is_numeric($salvage)) && (is_numeric($life)) && (is_numeric($period))) {
@@ -2002,7 +1962,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * TBILLEQ
@@ -2018,9 +1977,9 @@ class PHPExcel_Calculation_Financial
      */
     public static function TBILLEQ($settlement, $maturity, $discount)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $discount    = PHPExcel_Calculation_Functions::flattenSingleValue($discount);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $discount = PHPExcel_Calculation_Functions::flattenSingleValue($discount);
 
         //    Use TBILLPRICE for validation
         $testValue = self::TBILLPRICE($settlement, $maturity, $discount);
@@ -2042,7 +2001,6 @@ class PHPExcel_Calculation_Financial
         return (365 * $discount) / (360 - $discount * $daysBetweenSettlementAndMaturity);
     }
 
-
     /**
      * TBILLPRICE
      *
@@ -2057,9 +2015,9 @@ class PHPExcel_Calculation_Financial
      */
     public static function TBILLPRICE($settlement, $maturity, $discount)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $discount    = PHPExcel_Calculation_Functions::flattenSingleValue($discount);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $discount = PHPExcel_Calculation_Functions::flattenSingleValue($discount);
 
         if (is_string($maturity = PHPExcel_Calculation_DateTime::getDateValue($maturity))) {
             return PHPExcel_Calculation_Functions::VALUE();
@@ -2095,7 +2053,6 @@ class PHPExcel_Calculation_Financial
         return PHPExcel_Calculation_Functions::VALUE();
     }
 
-
     /**
      * TBILLYIELD
      *
@@ -2110,9 +2067,9 @@ class PHPExcel_Calculation_Financial
      */
     public static function TBILLYIELD($settlement, $maturity, $price)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $price        = PHPExcel_Calculation_Functions::flattenSingleValue($price);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $price = PHPExcel_Calculation_Functions::flattenSingleValue($price);
 
         //    Validate
         if (is_numeric($price)) {
@@ -2140,15 +2097,14 @@ class PHPExcel_Calculation_Financial
         return PHPExcel_Calculation_Functions::VALUE();
     }
 
-
     public static function XIRR($values, $dates, $guess = 0.1)
     {
         if ((!is_array($values)) && (!is_array($dates))) {
             return PHPExcel_Calculation_Functions::VALUE();
         }
         $values = PHPExcel_Calculation_Functions::flattenArray($values);
-        $dates  = PHPExcel_Calculation_Functions::flattenArray($dates);
-        $guess  = PHPExcel_Calculation_Functions::flattenSingleValue($guess);
+        $dates = PHPExcel_Calculation_Functions::flattenArray($dates);
+        $guess = PHPExcel_Calculation_Functions::flattenSingleValue($guess);
         if (count($values) != count($dates)) {
             return PHPExcel_Calculation_Functions::NaN();
         }
@@ -2194,7 +2150,6 @@ class PHPExcel_Calculation_Financial
         return PHPExcel_Calculation_Functions::VALUE();
     }
 
-
     /**
      * XNPV
      *
@@ -2223,8 +2178,8 @@ class PHPExcel_Calculation_Financial
         if ((!is_array($values)) || (!is_array($dates))) {
             return PHPExcel_Calculation_Functions::VALUE();
         }
-        $values    = PHPExcel_Calculation_Functions::flattenArray($values);
-        $dates    = PHPExcel_Calculation_Functions::flattenArray($dates);
+        $values = PHPExcel_Calculation_Functions::flattenArray($values);
+        $dates = PHPExcel_Calculation_Functions::flattenArray($dates);
         $valCount = count($values);
         if ($valCount != count($dates)) {
             return PHPExcel_Calculation_Functions::NaN();
@@ -2242,7 +2197,6 @@ class PHPExcel_Calculation_Financial
         }
         return (is_finite($xnpv)) ? $xnpv : PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * YIELDDISC
@@ -2265,11 +2219,11 @@ class PHPExcel_Calculation_Financial
      */
     public static function YIELDDISC($settlement, $maturity, $price, $redemption, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $price        = PHPExcel_Calculation_Functions::flattenSingleValue($price);
-        $redemption    = PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
-        $basis        = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $price = PHPExcel_Calculation_Functions::flattenSingleValue($price);
+        $redemption = PHPExcel_Calculation_Functions::flattenSingleValue($redemption);
+        $basis = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if (is_numeric($price) && is_numeric($redemption)) {
@@ -2291,7 +2245,6 @@ class PHPExcel_Calculation_Financial
         }
         return PHPExcel_Calculation_Functions::VALUE();
     }
-
 
     /**
      * YIELDMAT
@@ -2315,12 +2268,12 @@ class PHPExcel_Calculation_Financial
      */
     public static function YIELDMAT($settlement, $maturity, $issue, $rate, $price, $basis = 0)
     {
-        $settlement    = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
-        $maturity    = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
-        $issue        = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
-        $rate        = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
-        $price        = PHPExcel_Calculation_Functions::flattenSingleValue($price);
-        $basis        = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
+        $settlement = PHPExcel_Calculation_Functions::flattenSingleValue($settlement);
+        $maturity = PHPExcel_Calculation_Functions::flattenSingleValue($maturity);
+        $issue = PHPExcel_Calculation_Functions::flattenSingleValue($issue);
+        $rate = PHPExcel_Calculation_Functions::flattenSingleValue($rate);
+        $price = PHPExcel_Calculation_Functions::flattenSingleValue($price);
+        $basis = (int) PHPExcel_Calculation_Functions::flattenSingleValue($basis);
 
         //    Validate
         if (is_numeric($rate) && is_numeric($price)) {

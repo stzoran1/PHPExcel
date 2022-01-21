@@ -2,7 +2,7 @@
 
 class PHPExcel_Helper_HTML
 {
-    protected static $colourMap = array(
+    protected static $colourMap = [
         'aliceblue' => 'f0f8ff',
         'antiquewhite' => 'faebd7',
         'antiquewhite1' => 'ffefdb',
@@ -520,7 +520,7 @@ class PHPExcel_Helper_HTML
         'yellow3' => 'cdcd00',
         'yellow4' => '8b8b00',
         'yellowgreen' => '9acd32',
-    );
+    ];
 
     protected $face;
     protected $size;
@@ -533,7 +533,7 @@ class PHPExcel_Helper_HTML
     protected $subscript = false;
     protected $strikethrough = false;
 
-    protected $startTagCallbacks = array(
+    protected $startTagCallbacks = [
         'font' => 'startFontTag',
         'b' => 'startBoldTag',
         'strong' => 'startBoldTag',
@@ -544,9 +544,9 @@ class PHPExcel_Helper_HTML
         'del' => 'startStrikethruTag',
         'sup' => 'startSuperscriptTag',
         'sub' => 'startSubscriptTag',
-    );
+    ];
 
-    protected $endTagCallbacks = array(
+    protected $endTagCallbacks = [
         'font' => 'endFontTag',
         'b' => 'endBoldTag',
         'strong' => 'endBoldTag',
@@ -565,9 +565,9 @@ class PHPExcel_Helper_HTML
         'h4' => 'breakTag',
         'h5' => 'breakTag',
         'h6' => 'breakTag',
-    );
+    ];
 
-    protected $stack = array();
+    protected $stack = [];
 
     protected $stringData = '';
 
@@ -578,7 +578,7 @@ class PHPExcel_Helper_HTML
         $this->face = $this->size = $this->color = null;
         $this->bold = $this->italic = $this->underline = $this->superscript = $this->subscript = $this->strikethrough = false;
 
-        $this->stack = array();
+        $this->stack = [];
 
         $this->stringData = '';
     }
@@ -588,7 +588,7 @@ class PHPExcel_Helper_HTML
         $this->initialise();
 
         //  Create a new DOM object
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         //  Load the HTML file into the DOM object
         //  Note the use of error suppression, because typically this will be an html fragment, so not fully valid markup
         $loaded = @$dom->loadHTML($html);
@@ -596,7 +596,8 @@ class PHPExcel_Helper_HTML
         //  Discard excess white space
         $dom->preserveWhiteSpace = false;
 
-        $this->richTextObject = new PHPExcel_RichText();;
+        $this->richTextObject = new PHPExcel_RichText();
+        ;
         $this->parseElements($dom);
 
         // Clean any further spurious whitespace
@@ -766,7 +767,7 @@ class PHPExcel_Helper_HTML
         $domText = preg_replace(
             '/\s+/u',
             ' ',
-            str_replace(array("\r", "\n"), ' ', $textNode->nodeValue)
+            str_replace(["\r", "\n"], ' ', $textNode->nodeValue)
         );
         $this->stringData .= $domText;
         $this->buildTextRun();
@@ -777,7 +778,7 @@ class PHPExcel_Helper_HTML
         if (isset($callbacks[$callbackTag])) {
             $elementHandler = $callbacks[$callbackTag];
             if (method_exists($this, $elementHandler)) {
-                call_user_func(array($this, $elementHandler), $element);
+                call_user_func([$this, $elementHandler], $element);
             }
         }
     }

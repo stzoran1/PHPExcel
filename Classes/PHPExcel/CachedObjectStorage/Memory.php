@@ -54,7 +54,6 @@ class PHPExcel_CachedObjectStorage_Memory extends PHPExcel_CachedObjectStorage_C
         return $cell;
     }
 
-
     /**
      * Get cell at a specific coordinate
      *
@@ -78,7 +77,6 @@ class PHPExcel_CachedObjectStorage_Memory extends PHPExcel_CachedObjectStorage_C
         return $this->cellCache[$pCoord];
     }
 
-
     /**
      * Clone the cell collection
      *
@@ -88,7 +86,7 @@ class PHPExcel_CachedObjectStorage_Memory extends PHPExcel_CachedObjectStorage_C
     {
         parent::copyCellCollection($parent);
 
-        $newCollection = array();
+        $newCollection = [];
         foreach ($this->cellCache as $k => &$cell) {
             $newCollection[$k] = clone $cell;
             $newCollection[$k]->attach($this);
@@ -110,7 +108,7 @@ class PHPExcel_CachedObjectStorage_Memory extends PHPExcel_CachedObjectStorage_C
         }
         unset($cell);
 
-        $this->cellCache = array();
+        $this->cellCache = [];
 
         //    detach ourself from the worksheet, so that it can then delete this object successfully
         $this->parent = null;
